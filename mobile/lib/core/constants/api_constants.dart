@@ -1,21 +1,15 @@
 import 'package:flutter/foundation.dart';
 
 class ApiConstants {
-  // Support --dart-define=API_BASE_URL=https://...
+  static const String productionBaseUrl = 'https://music-app-api-17wl.onrender.com';
+
+  // Support --dart-define=API_BASE_URL=https://... or defaults to deployed Render backend
   static String get baseUrl {
     const envUrl = String.fromEnvironment('API_BASE_URL');
     if (envUrl.isNotEmpty) {
       return envUrl;
     }
-    if (kIsWeb) {
-      return 'http://localhost:8000';
-    }
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return 'http://10.0.2.2:8000'; // Android emulator localhost
-      default:
-        return 'http://localhost:8000';
-    }
+    return productionBaseUrl;
   }
 
   // Auth endpoints

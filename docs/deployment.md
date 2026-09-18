@@ -41,7 +41,7 @@ To build the release Android APK:
 
 ```bash
 cd mobile
-flutter build apk --release --dart-define=API_BASE_URL=https://api.resonance-campus.com
+flutter build apk --release --dart-define=API_BASE_URL=https://music-app-api-17wl.onrender.com
 ```
 
 Output: `mobile/build/app/outputs/flutter-apk/app-release.apk`
