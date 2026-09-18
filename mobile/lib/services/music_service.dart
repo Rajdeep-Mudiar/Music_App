@@ -15,13 +15,39 @@ class MusicService {
       );
       if (res.statusCode == 200) {
         final list = res.data as List<dynamic>;
-        return list.map((json) => Track.fromJson(json)).toList();
+        if (list.isNotEmpty) {
+          return list.map((json) => Track.fromJson(json)).toList();
+        }
       }
     } catch (_) {}
+
+    // Direct Open Trending Hits Fallback
+    try {
+      final directRes = await apiClient.dio.get(
+        'https://itunes.apple.com/search',
+        queryParameters: {
+          'term': 'top hits 2026',
+          'media': 'music',
+          'limit': limit
+        },
+      );
+      if (directRes.statusCode == 200) {
+        final results = directRes.data['results'] as List<dynamic>? ?? [];
+        final parsed = results
+            .where((item) => item['previewUrl'] != null)
+            .map((item) => _parseItunesTrack(item as Map<String, dynamic>))
+            .toList();
+        if (parsed.isNotEmpty) {
+          return _getFallbackTracks().take(4).toList() + parsed;
+        }
+      }
+    } catch (_) {}
+
     return _getFallbackTracks();
   }
 
   Future<List<Track>> searchTracks(String query, {int limit = 20}) async {
+    // 1. Try backend search
     try {
       final res = await apiClient.dio.get(
         ApiConstants.musicSearch,
@@ -29,14 +55,65 @@ class MusicService {
       );
       if (res.statusCode == 200) {
         final list = res.data as List<dynamic>;
-        return list.map((json) => Track.fromJson(json)).toList();
+        if (list.isNotEmpty) {
+          return list.map((json) => Track.fromJson(json)).toList();
+        }
       }
     } catch (_) {}
+
+    // 2. Direct high-speed Open Music Search (No API Key required)
+    try {
+      final directRes = await apiClient.dio.get(
+        'https://itunes.apple.com/search',
+        queryParameters: {'term': query, 'media': 'music', 'limit': limit},
+      );
+      if (directRes.statusCode == 200) {
+        final results = directRes.data['results'] as List<dynamic>? ?? [];
+        final parsed = results
+            .where((item) => item['previewUrl'] != null)
+            .map((item) => _parseItunesTrack(item as Map<String, dynamic>))
+            .toList();
+        if (parsed.isNotEmpty) {
+          final curatedMatches = _getFallbackTracks()
+              .where((t) =>
+                  t.title.toLowerCase().contains(query.toLowerCase()) ||
+                  t.artist.toLowerCase().contains(query.toLowerCase()) ||
+                  t.genre.toLowerCase().contains(query.toLowerCase()))
+              .toList();
+          return curatedMatches + parsed;
+        }
+      }
+    } catch (_) {}
+
     return _getFallbackTracks()
         .where((t) =>
             t.title.toLowerCase().contains(query.toLowerCase()) ||
-            t.artist.toLowerCase().contains(query.toLowerCase()))
+            t.artist.toLowerCase().contains(query.toLowerCase()) ||
+            t.genre.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+
+  Track _parseItunesTrack(Map<String, dynamic> json) {
+    final trackId = json['trackId']?.toString() ??
+        json['collectionId']?.toString() ??
+        'trk';
+    final artwork = (json['artworkUrl100'] as String?)
+            ?.replaceAll('100x100bb', '600x600bb') ??
+        'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500';
+    final millis = json['trackTimeMillis'] as int? ?? 180000;
+    final duration = (millis / 1000).round();
+
+    return Track(
+      id: 'itunes_$trackId',
+      title: json['trackName'] ?? json['collectionName'] ?? 'Untitled Track',
+      artist: json['artistName'] ?? 'Various Artists',
+      artistId: json['artistId']?.toString(),
+      album: json['collectionName'] ?? 'Single',
+      duration: duration,
+      artworkUrl: artwork,
+      streamUrl: json['previewUrl'] ?? '',
+      genre: json['primaryGenreName'] ?? 'Music',
+    );
   }
 
   Future<List<Track>> getStudyTracks(

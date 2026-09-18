@@ -216,13 +216,60 @@ class AudiusProvider(BaseMusicProvider):
             provider="audius"
         )
 
+    def _parse_itunes_track(self, item: Dict[str, Any]) -> Optional[Track]:
+        preview = item.get("previewUrl")
+        if not preview:
+            return None
+        artwork = item.get("artworkUrl100", "").replace("100x100bb", "600x600bb")
+        if not artwork:
+            artwork = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500"
+        track_id = str(item.get("trackId") or item.get("collectionId") or "trk")
+        millis = item.get("trackTimeMillis", 180000)
+        duration = int(millis / 1000) if millis else 180
+
+        return Track(
+            id=f"itunes_{track_id}",
+            title=item.get("trackName") or item.get("collectionName") or "Untitled Track",
+            artist=item.get("artistName") or "Various Artists",
+            artist_id=str(item.get("artistId", "")),
+            album=item.get("collectionName") or "Single",
+            duration=duration,
+            artwork_url=artwork,
+            stream_url=preview,
+            genre=item.get("primaryGenreName") or "Music",
+            provider="itunes_open"
+        )
+
     async def search_tracks(self, query: str, limit: int = 20) -> List[Track]:
-        # Check if searching for study/lofi keywords
         q_lower = query.lower()
-        matched_curated = [t for t in CURATED_STUDY_TRACKS if q_lower in t.title.lower() or q_lower in t.genre.lower() or q_lower in t.artist.lower()]
+        matched_curated = [
+            t for t in CURATED_STUDY_TRACKS 
+            if q_lower in t.title.lower() or q_lower in t.genre.lower() or q_lower in t.artist.lower()
+        ]
         
+        # 1. Search iTunes high-speed open API
+        itunes_results: List[Track] = []
         try:
-            async with httpx.AsyncClient(timeout=7.0) as client:
+            async with httpx.AsyncClient(timeout=4.0) as client:
+                res = await client.get(
+                    "https://itunes.apple.com/search",
+                    params={"term": query, "media": "music", "limit": limit}
+                )
+                if res.status_code == 200:
+                    data = res.json().get("results", [])
+                    for item in data:
+                        parsed = self._parse_itunes_track(item)
+                        if parsed:
+                            itunes_results.append(parsed)
+        except Exception as e:
+            logger.warning(f"iTunes search failed: {e}")
+
+        if itunes_results:
+            return matched_curated + itunes_results
+
+        # 2. Audius search fallback
+        try:
+            async with httpx.AsyncClient(timeout=6.0) as client:
                 res = await client.get(
                     f"{self.base_url}/v1/tracks/search",
                     params={"query": query, "app_name": self.app_name, "limit": limit}
@@ -232,13 +279,34 @@ class AudiusProvider(BaseMusicProvider):
                     parsed = [self._parse_track(item) for item in data if item.get("id")]
                     return matched_curated + parsed
         except Exception as e:
-            logger.warning(f"Audius search failed: {e}. Returning curated matches.")
+            logger.warning(f"Audius search failed: {e}")
         
         return matched_curated or [t for t in CURATED_STUDY_TRACKS if "lofi" in t.title.lower()]
 
     async def get_trending_tracks(self, limit: int = 20) -> List[Track]:
+        # 1. Fetch real trending hits from iTunes
+        trending_results: List[Track] = []
         try:
-            async with httpx.AsyncClient(timeout=7.0) as client:
+            async with httpx.AsyncClient(timeout=4.0) as client:
+                res = await client.get(
+                    "https://itunes.apple.com/search",
+                    params={"term": "top hits 2026", "media": "music", "limit": limit}
+                )
+                if res.status_code == 200:
+                    data = res.json().get("results", [])
+                    for item in data:
+                        parsed = self._parse_itunes_track(item)
+                        if parsed:
+                            trending_results.append(parsed)
+        except Exception as e:
+            logger.warning(f"iTunes trending failed: {e}")
+
+        if trending_results:
+            return CURATED_STUDY_TRACKS[:4] + trending_results
+
+        # 2. Audius trending fallback
+        try:
+            async with httpx.AsyncClient(timeout=6.0) as client:
                 res = await client.get(
                     f"{self.base_url}/v1/tracks/trending",
                     params={"app_name": self.app_name, "limit": limit}
@@ -246,91 +314,21 @@ class AudiusProvider(BaseMusicProvider):
                 if res.status_code == 200:
                     data = res.json().get("data", [])
                     parsed = [self._parse_track(item) for item in data if item.get("id")]
-                    # Prepend a couple curated focus tracks for student relevance
-                    return CURATED_STUDY_TRACKS[:2] + parsed
+                    return CURATED_STUDY_TRACKS[:4] + parsed
         except Exception as e:
-            logger.warning(f"Audius trending failed: {e}. Falling back to curated tracks.")
+            logger.warning(f"Audius trending failed: {e}")
         
         return CURATED_STUDY_TRACKS
 
-    async def get_track(self, track_id: str) -> Optional[Track]:
-        # Check curated list
-        for t in CURATED_STUDY_TRACKS:
-            if t.id == track_id:
-                return t
-        
-        try:
-            async with httpx.AsyncClient(timeout=6.0) as client:
-                res = await client.get(
-                    f"{self.base_url}/v1/tracks/{track_id}",
-                    params={"app_name": self.app_name}
-                )
-                if res.status_code == 200:
-                    item = res.json().get("data")
-                    if item:
-                        return self._parse_track(item)
-        except Exception as e:
-            logger.warning(f"Failed to fetch track {track_id}: {e}")
-        return None
-
-    async def get_stream_url(self, track_id: str) -> str:
-        for t in CURATED_STUDY_TRACKS:
-            if t.id == track_id:
-                return t.stream_url
-        return f"{self.base_url}/v1/tracks/{track_id}/stream?app_name={self.app_name}"
-
-    async def search_artists(self, query: str, limit: int = 10) -> List[Artist]:
-        try:
-            async with httpx.AsyncClient(timeout=6.0) as client:
-                res = await client.get(
-                    f"{self.base_url}/v1/users/search",
-                    params={"query": query, "app_name": self.app_name, "limit": limit}
-                )
-                if res.status_code == 200:
-                    data = res.json().get("data", [])
-                    artists = []
-                    for user in data:
-                        profile_pic = (user.get("profile_picture") or {}).get("480x480")
-                        artists.append(
-                            Artist(
-                                id=str(user.get("id")),
-                                name=user.get("name") or "Artist",
-                                bio=user.get("bio") or "",
-                                artwork_url=profile_pic or "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500",
-                                followers_count=int(user.get("follower_count", 0)),
-                                is_student_artist=False
-                            )
-                        )
-                    return artists
-        except Exception as e:
-            logger.warning(f"Search artists failed: {e}")
-        return []
-
-    async def get_artist(self, artist_id: str) -> Optional[Artist]:
-        try:
-            async with httpx.AsyncClient(timeout=6.0) as client:
-                res = await client.get(
-                    f"{self.base_url}/v1/users/{artist_id}",
-                    params={"app_name": self.app_name}
-                )
-                if res.status_code == 200:
-                    user = res.json().get("data")
-                    if user:
-                        profile_pic = (user.get("profile_picture") or {}).get("480x480")
-                        return Artist(
-                            id=str(user.get("id")),
-                            name=user.get("name") or "Artist",
-                            bio=user.get("bio") or "",
-                            artwork_url=profile_pic or "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500",
-                            followers_count=int(user.get("follower_count", 0)),
-                            is_student_artist=False
-                        )
-        except Exception as e:
-            logger.warning(f"Get artist failed: {e}")
-        return None
-
     async def get_study_tracks(self, vibe: str = "lofi", limit: int = 20) -> List[Track]:
-        results = await self.search_tracks(f"study {vibe}", limit=limit)
-        if not results:
-            return CURATED_STUDY_TRACKS
-        return results
+        # Filter curated by vibe
+        vibe_lower = vibe.lower()
+        matched = [
+            t for t in CURATED_STUDY_TRACKS 
+            if vibe_lower in t.genre.lower() or vibe_lower in t.title.lower()
+        ]
+        
+        # Also query online for dynamic tracks
+        online_results = await self.search_tracks(f"study {vibe}", limit=limit)
+        combined = matched + [t for t in online_results if t.id not in [m.id for m in matched]]
+        return combined if combined else CURATED_STUDY_TRACKS
