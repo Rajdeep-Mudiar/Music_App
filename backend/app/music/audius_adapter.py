@@ -74,6 +74,116 @@ CURATED_STUDY_TRACKS = [
         stream_url="https://cdn.pixabay.com/download/audio/2023/04/18/audio_651f65d645.mp3?filename=synthwave-80s-110045.mp3",
         genre="Synthwave",
         provider="resonance_curated"
+    ),
+    Track(
+        id="study_lofi_7",
+        title="Sunset Hostel Balcony",
+        artist="Campus Dusk",
+        album="Hostel Diarie",
+        duration=190,
+        artwork_url="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/11/06/audio_c97a5b3a4a.mp3?filename=lofi-study-beat-126297.mp3",
+        genre="Lo-Fi",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_electronic_8",
+        title="Neon Matrix Focus",
+        artist="Quantum Pulse",
+        album="Digital Architecture",
+        duration=215,
+        artwork_url="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=electronic-future-beats-117997.mp3",
+        genre="Electronic",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_acoustic_9",
+        title="Morning Library Sunlight",
+        artist="Acoustic Scholar",
+        album="Golden Hour Notes",
+        duration=175,
+        artwork_url="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/02/07/audio_d0a13f69d2.mp3?filename=acoustic-guitars-ambient-14092.mp3",
+        genre="Acoustic",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_jazz_10",
+        title="Midnight Study Session Jazz",
+        artist="The Quad Trio",
+        album="Late Hours Vol. 2",
+        duration=230,
+        artwork_url="https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/05/16/audio_db6591201e.mp3?filename=coffee-chill-out-111155.mp3",
+        genre="Jazz",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_chill_11",
+        title="Deep Focus Alpha Waves",
+        artist="Neuro Beats",
+        album="Cognitive Flow",
+        duration=250,
+        artwork_url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2021/08/04/audio_12b0c7443c.mp3?filename=meditation-ambient-sound-6321.mp3",
+        genre="Ambient",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_synth_12",
+        title="Cyberpunk Code Runner",
+        artist="Byte Wizard",
+        album="Binary Horizons",
+        duration=205,
+        artwork_url="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/10/25/audio_2c9435e055.mp3?filename=synthwave-action-retro-123498.mp3",
+        genre="Synthwave",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_piano_13",
+        title="Autumn Campus Stroll",
+        artist="Clara Sterling",
+        album="University Woods",
+        duration=180,
+        artwork_url="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/04/27/audio_33878b277a.mp3?filename=emotional-piano-melody-110825.mp3",
+        genre="Classical",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_lofi_14",
+        title="3 AM Thesis Writing",
+        artist="Graduate Beatmaker",
+        album="Deadline Dreams",
+        duration=195,
+        artwork_url="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2023/01/01/audio_145b40cf61.mp3?filename=lofi-chill-hop-133182.mp3",
+        genre="Lo-Fi",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_ambient_15",
+        title="Brahmaputra Riverside Breeze",
+        artist="Assam Sound Labs",
+        album="Campus Nature Series",
+        duration=220,
+        artwork_url="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2021/11/24/audio_82e666a0a2.mp3?filename=nature-birds-forest-ambience-9938.mp3",
+        genre="Ambient",
+        provider="resonance_curated"
+    ),
+    Track(
+        id="study_pop_16",
+        title="Upbeat Campus Motivation",
+        artist="Solar Energy",
+        album="Freshman Momentum",
+        duration=190,
+        artwork_url="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500",
+        stream_url="https://cdn.pixabay.com/download/audio/2022/06/07/audio_b2879555cb.mp3?filename=energetic-indie-rock-upbeat-113881.mp3",
+        genre="Indie",
+        provider="resonance_curated"
     )
 ]
 

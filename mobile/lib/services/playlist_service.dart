@@ -1,79 +1,50 @@
 import 'package:resonance/core/constants/api_constants.dart';
 import 'package:resonance/core/network/api_client.dart';
+import 'package:resonance/models/playlist_model.dart';
 import 'package:resonance/models/track_model.dart';
 
-class MusicService {
+class PlaylistService {
   final ApiClient apiClient;
 
-  MusicService({required this.apiClient});
+  PlaylistService({required this.apiClient});
 
-  Future<List<Track>> getTrending({int limit = 20}) async {
+  Future<List<PlaylistModel>> getCampusPlaylists() async {
     try {
-      final res = await apiClient.dio.get(
-        ApiConstants.musicTrending,
-        queryParameters: {'limit': limit},
-      );
+      final res = await apiClient.dio.get(ApiConstants.playlistsCampus);
       if (res.statusCode == 200) {
         final list = res.data as List<dynamic>;
-        return list.map((json) => Track.fromJson(json)).toList();
+        return list.map((json) => PlaylistModel.fromJson(json)).toList();
       }
     } catch (_) {}
-    return _getFallbackTracks();
+    return _getStarterPlaylists();
   }
 
-  Future<List<Track>> searchTracks(String query, {int limit = 20}) async {
+  Future<PlaylistModel?> getPlaylistDetail(String playlistId) async {
     try {
-      final res = await apiClient.dio.get(
-        ApiConstants.musicSearch,
-        queryParameters: {'q': query, 'limit': limit},
-      );
+      final res =
+          await apiClient.dio.get('${ApiConstants.playlists}/$playlistId');
       if (res.statusCode == 200) {
-        final list = res.data as List<dynamic>;
-        return list.map((json) => Track.fromJson(json)).toList();
+        return PlaylistModel.fromJson(res.data);
       }
     } catch (_) {}
-    return _getFallbackTracks()
-        .where((t) =>
-            t.title.toLowerCase().contains(query.toLowerCase()) ||
-            t.artist.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+
+    final starters = _getStarterPlaylists();
+    for (final p in starters) {
+      if (p.id == playlistId) return p;
+    }
+    return null;
   }
 
-  Future<List<Track>> getStudyTracks(
-      {String vibe = 'lofi', int limit = 20}) async {
+  Future<void> voteSong(String playlistId, String songId) async {
     try {
-      final res = await apiClient.dio.get(
-        ApiConstants.musicStudyTracks,
-        queryParameters: {'vibe': vibe, 'limit': limit},
-      );
-      if (res.statusCode == 200) {
-        final list = res.data as List<dynamic>;
-        return list.map((json) => Track.fromJson(json)).toList();
-      }
-    } catch (_) {}
-    return _getFallbackTracks();
-  }
-
-  Future<void> likeTrack(String trackId) async {
-    try {
-      await apiClient.dio.post('/api/music/like/$trackId');
+      await apiClient.dio
+          .post('${ApiConstants.playlists}/$playlistId/songs/$songId/vote');
     } catch (_) {}
   }
 
-  Future<void> unlikeTrack(String trackId) async {
-    try {
-      await apiClient.dio.post('/api/music/unlike/$trackId');
-    } catch (_) {}
-  }
-
-  Future<void> recordHistory(String trackId) async {
-    try {
-      await apiClient.dio.post('/api/music/history/$trackId');
-    } catch (_) {}
-  }
-
-  List<Track> _getFallbackTracks() {
-    return [
+  List<PlaylistModel> _getStarterPlaylists() {
+    // Get the 16 fallback tracks
+    final tracks = [
       Track(
         id: 'study_lofi_1',
         title: 'Midnight Campus Lo-Fi',
@@ -218,53 +189,131 @@ class MusicService {
             'https://cdn.pixabay.com/download/audio/2022/10/25/audio_2c9435e055.mp3?filename=synthwave-action-retro-123498.mp3',
         genre: 'Synthwave',
       ),
-      Track(
-        id: 'study_piano_13',
-        title: 'Autumn Campus Stroll',
-        artist: 'Clara Sterling',
-        album: 'University Woods',
-        duration: 180,
-        artworkUrl:
-            'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500',
-        streamUrl:
-            'https://cdn.pixabay.com/download/audio/2022/04/27/audio_33878b277a.mp3?filename=emotional-piano-melody-110825.mp3',
-        genre: 'Classical',
+    ];
+
+    return [
+      PlaylistModel(
+        id: 'campus_cse_1',
+        title: 'CSE Night Coding Marathon',
+        description:
+            'Heavy focus, synth beats, and lo-fi rhythms for debugging past midnight.',
+        creatorId: 'campus_admin',
+        creatorName: 'CSE Society',
+        type: 'department',
+        isPublic: true,
+        coverImage:
+            'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500',
+        university: 'Gauhati University',
+        department: 'CSE',
+        songs: [
+          PlaylistSongItem(
+              song: tracks[1],
+              addedById: 'admin',
+              addedByName: 'CSE Society',
+              votes: 15),
+          PlaylistSongItem(
+              song: tracks[5],
+              addedById: 'admin',
+              addedByName: 'CSE Society',
+              votes: 14),
+          PlaylistSongItem(
+              song: tracks[7],
+              addedById: 'admin',
+              addedByName: 'CSE Society',
+              votes: 13),
+          PlaylistSongItem(
+              song: tracks[11],
+              addedById: 'admin',
+              addedByName: 'CSE Society',
+              votes: 12),
+          PlaylistSongItem(
+              song: tracks[0],
+              addedById: 'admin',
+              addedByName: 'CSE Society',
+              votes: 10),
+        ],
       ),
-      Track(
-        id: 'study_lofi_14',
-        title: '3 AM Thesis Writing',
-        artist: 'Graduate Beatmaker',
-        album: 'Deadline Dreams',
-        duration: 195,
-        artworkUrl:
-            'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500',
-        streamUrl:
-            'https://cdn.pixabay.com/download/audio/2023/01/01/audio_145b40cf61.mp3?filename=lofi-chill-hop-133182.mp3',
-        genre: 'Lo-Fi',
+      PlaylistModel(
+        id: 'campus_exam_2',
+        title: 'Exam Week Calm',
+        description:
+            'Gentle acoustics, ambient rain, and calming piano for low-stress prep.',
+        creatorId: 'campus_admin',
+        creatorName: 'Student Welfare',
+        type: 'university',
+        isPublic: true,
+        coverImage:
+            'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500',
+        university: 'Gauhati University',
+        department: 'All',
+        songs: [
+          PlaylistSongItem(
+              song: tracks[2],
+              addedById: 'admin',
+              addedByName: 'Student Welfare',
+              votes: 20),
+          PlaylistSongItem(
+              song: tracks[3],
+              addedById: 'admin',
+              addedByName: 'Student Welfare',
+              votes: 19),
+          PlaylistSongItem(
+              song: tracks[4],
+              addedById: 'admin',
+              addedByName: 'Student Welfare',
+              votes: 17),
+          PlaylistSongItem(
+              song: tracks[8],
+              addedById: 'admin',
+              addedByName: 'Student Welfare',
+              votes: 15),
+          PlaylistSongItem(
+              song: tracks[10],
+              addedById: 'admin',
+              addedByName: 'Student Welfare',
+              votes: 14),
+        ],
       ),
-      Track(
-        id: 'study_ambient_15',
-        title: 'Brahmaputra Riverside Breeze',
-        artist: 'Assam Sound Labs',
-        album: 'Campus Nature Series',
-        duration: 220,
-        artworkUrl:
-            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500',
-        streamUrl:
-            'https://cdn.pixabay.com/download/audio/2021/11/24/audio_82e666a0a2.mp3?filename=nature-birds-forest-ambience-9938.mp3',
-        genre: 'Ambient',
-      ),
-      Track(
-        id: 'study_pop_16',
-        title: 'Upbeat Campus Motivation',
-        artist: 'Solar Energy',
-        album: 'Freshman Momentum',
-        duration: 190,
-        artworkUrl:
-            'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
-        streamUrl:
-            'https://cdn.pixabay.com/download/audio/2022/06/07/audio_b2879555cb.mp3?filename=energetic-indie-rock-upbeat-113881.mp3',
-        genre: 'Indie',
+      PlaylistModel(
+        id: 'campus_hostel_3',
+        title: 'Hostel Balcony Chill',
+        description:
+            'Evening chai tunes, indie guitars, and nostalgic student anthems.',
+        creatorId: 'campus_admin',
+        creatorName: 'Hostel Block 4',
+        type: 'collaborative',
+        isPublic: true,
+        coverImage:
+            'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=500',
+        university: 'Gauhati University',
+        department: 'All',
+        songs: [
+          PlaylistSongItem(
+              song: tracks[6],
+              addedById: 'admin',
+              addedByName: 'Hostel Block 4',
+              votes: 18),
+          PlaylistSongItem(
+              song: tracks[9],
+              addedById: 'admin',
+              addedByName: 'Hostel Block 4',
+              votes: 16),
+          PlaylistSongItem(
+              song: tracks[0],
+              addedById: 'admin',
+              addedByName: 'Hostel Block 4',
+              votes: 14),
+          PlaylistSongItem(
+              song: tracks[4],
+              addedById: 'admin',
+              addedByName: 'Hostel Block 4',
+              votes: 12),
+          PlaylistSongItem(
+              song: tracks[8],
+              addedById: 'admin',
+              addedByName: 'Hostel Block 4',
+              votes: 10),
+        ],
       ),
     ];
   }

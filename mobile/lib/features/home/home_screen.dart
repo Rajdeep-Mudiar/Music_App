@@ -275,12 +275,7 @@ class HomeScreen extends ConsumerWidget {
                       color: const Color(0xFF6C5CE7),
                       icon: Icons.code,
                       onTap: () {
-                        if (studyAsync.value != null &&
-                            studyAsync.value!.isNotEmpty) {
-                          ref.read(playerProvider.notifier).playTrack(
-                              studyAsync.value![0],
-                              queue: studyAsync.value);
-                        }
+                        context.push('/playlist/campus_cse_1');
                       },
                     ),
                   ),
@@ -292,12 +287,7 @@ class HomeScreen extends ConsumerWidget {
                       color: const Color(0xFF00D2D3),
                       icon: Icons.water_drop,
                       onTap: () {
-                        if (studyAsync.value != null &&
-                            studyAsync.value!.length > 1) {
-                          ref.read(playerProvider.notifier).playTrack(
-                              studyAsync.value![1],
-                              queue: studyAsync.value);
-                        }
+                        context.push('/playlist/campus_exam_2');
                       },
                     ),
                   ),

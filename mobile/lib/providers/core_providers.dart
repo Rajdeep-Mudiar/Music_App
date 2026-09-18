@@ -7,6 +7,7 @@ import 'package:resonance/services/music_service.dart';
 import 'package:resonance/services/study_service.dart';
 import 'package:resonance/services/community_service.dart';
 import 'package:resonance/services/ai_service.dart';
+import 'package:resonance/services/playlist_service.dart';
 import 'package:resonance/services/update_service.dart';
 
 final secureStorageProvider = Provider<SecureStorageService>((ref) {
@@ -27,6 +28,11 @@ final authServiceProvider = Provider<AuthService>((ref) {
 final musicServiceProvider = Provider<MusicService>((ref) {
   final client = ref.watch(apiClientProvider);
   return MusicService(apiClient: client);
+});
+
+final playlistServiceProvider = Provider<PlaylistService>((ref) {
+  final client = ref.watch(apiClientProvider);
+  return PlaylistService(apiClient: client);
 });
 
 final studyServiceProvider = Provider<StudyService>((ref) {

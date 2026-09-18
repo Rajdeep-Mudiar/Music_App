@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:resonance/core/theme/app_theme.dart';
 import 'package:resonance/providers/auth_provider.dart';
 import 'package:resonance/providers/data_providers.dart';
@@ -129,41 +130,29 @@ class LibraryScreen extends ConsumerWidget {
           // Sample Collaborative and Study Playlists
           _buildPlaylistItem(
             title: 'CSE Night Coding Marathon',
-            subtitle: 'Collaborative • 14 tracks • 4 contributors',
+            subtitle: 'Collaborative • 6 focus tracks',
             icon: Icons.group_work,
             color: const Color(0xFF6C5CE7),
             onTap: () {
-              if (studyAsync.value != null && studyAsync.value!.isNotEmpty) {
-                ref
-                    .read(playerProvider.notifier)
-                    .playTrack(studyAsync.value![0], queue: studyAsync.value);
-              }
+              context.push('/playlist/campus_cse_1');
             },
           ),
           _buildPlaylistItem(
             title: 'Exam Calm Piano & Rain',
-            subtitle: 'Study Playlist • 8 tracks',
+            subtitle: 'Study Playlist • 7 calming tracks',
             icon: Icons.menu_book,
             color: const Color(0xFF00D2D3),
             onTap: () {
-              if (studyAsync.value != null && studyAsync.value!.length > 1) {
-                ref
-                    .read(playerProvider.notifier)
-                    .playTrack(studyAsync.value![1], queue: studyAsync.value);
-              }
+              context.push('/playlist/campus_exam_2');
             },
           ),
           _buildPlaylistItem(
             title: 'Hostel Balcony Chill',
-            subtitle: 'Campus Public • 12 tracks',
+            subtitle: 'Campus Public • 6 evening tracks',
             icon: Icons.nightlife,
             color: const Color(0xFFFF7675),
             onTap: () {
-              if (studyAsync.value != null && studyAsync.value!.length > 2) {
-                ref
-                    .read(playerProvider.notifier)
-                    .playTrack(studyAsync.value![2], queue: studyAsync.value);
-              }
+              context.push('/playlist/campus_hostel_3');
             },
           ),
 

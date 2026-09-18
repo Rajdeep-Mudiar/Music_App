@@ -11,6 +11,8 @@ import 'package:resonance/features/search/search_screen.dart';
 import 'package:resonance/features/study/study_screen.dart';
 import 'package:resonance/providers/auth_provider.dart';
 import 'package:resonance/providers/core_providers.dart';
+import 'package:resonance/features/playlist/playlist_detail_screen.dart';
+import 'package:resonance/models/playlist_model.dart';
 import 'package:resonance/services/update_service.dart';
 import 'package:resonance/widgets/mini_player.dart';
 import 'package:resonance/widgets/update_dialog.dart';
@@ -130,6 +132,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/ai-assistant',
         builder: (context, state) => const AIAssistantScreen(),
+      ),
+      GoRoute(
+        path: '/playlist/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          final extra = state.extra as PlaylistModel?;
+          return PlaylistDetailScreen(playlistId: id, initialPlaylist: extra);
+        },
       ),
     ],
     redirect: (context, state) {
