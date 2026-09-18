@@ -34,7 +34,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
   Widget build(BuildContext context) {
     final feedAsync = ref.watch(campusFeedProvider);
     final eventsAsync = ref.watch(campusEventsProvider);
-    final playerState = ref.watch(playerProvider);
 
     return Scaffold(
       appBar: AppBar(

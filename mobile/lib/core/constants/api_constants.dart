@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 class ApiConstants {
-  static const String productionBaseUrl = 'https://music-app-api-17wl.onrender.com';
+  static const String productionBaseUrl =
+      'https://music-app-api-17wl.onrender.com';
 
   // Support --dart-define=API_BASE_URL=https://... or defaults to deployed Render backend
   static String get baseUrl {
