@@ -63,7 +63,7 @@ async def verify_google_token(token: str) -> Dict[str, Any]:
         }
     
     try:
-        client_id = settings.GOOGLE_CLIENT_ID if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_ID != "mock_or_real_google_client_id" else None
+        client_id = settings.GOOGLE_CLIENT_ID or None
         id_info = id_token.verify_oauth2_token(token, google_requests.Request(), client_id)
         return id_info
     except Exception as e:
