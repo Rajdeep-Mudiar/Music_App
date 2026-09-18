@@ -4,7 +4,10 @@ from typing import Optional, Dict, Any
 from fastapi import HTTPException, Security, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
+try:
+    from google.auth.transport import requests as google_requests
+except Exception:
+    google_requests = None
 from app.config import settings
 
 security_scheme = HTTPBearer(auto_error=False)
@@ -64,7 +67,8 @@ async def verify_google_token(token: str) -> Dict[str, Any]:
     
     try:
         client_id = settings.GOOGLE_CLIENT_ID or None
-        id_info = id_token.verify_oauth2_token(token, google_requests.Request(), client_id)
+        req = google_requests.Request() if google_requests is not None else None
+        id_info = id_token.verify_oauth2_token(token, req, client_id)
         return id_info
     except Exception as e:
         # If client_id was not set and we are in development, gracefully decode unverified payload or raise error
