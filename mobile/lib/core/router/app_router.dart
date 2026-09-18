@@ -46,7 +46,8 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
     final result = await updateService.checkForUpdates();
     if (!mounted) return;
 
-    if (result.status == UpdateStatus.updateAvailable || result.status == UpdateStatus.forceUpdateRequired) {
+    if (result.status == UpdateStatus.updateAvailable ||
+        result.status == UpdateStatus.forceUpdateRequired) {
       if (result.versionInfo != null) {
         showDialog(
           context: context,
@@ -82,11 +83,26 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), activeIcon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.timer_outlined), activeIcon: Icon(Icons.timer), label: 'Study'),
-          BottomNavigationBarItem(icon: Icon(Icons.group_outlined), activeIcon: Icon(Icons.group), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), activeIcon: Icon(Icons.library_music), label: 'Library'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              activeIcon: Icon(Icons.search),
+              label: 'Search'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.timer_outlined),
+              activeIcon: Icon(Icons.timer),
+              label: 'Study'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.group_outlined),
+              activeIcon: Icon(Icons.group),
+              label: 'Community'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.library_music_outlined),
+              activeIcon: Icon(Icons.library_music),
+              label: 'Library'),
         ],
       ),
     );

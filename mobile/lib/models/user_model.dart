@@ -52,12 +52,21 @@ class UserModel {
       year: json['year'],
       semester: json['semester'],
       bio: json['bio'] ?? '',
-      favoriteGenres: (json['favorite_genres'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-      likedSongs: (json['liked_songs'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      favoriteGenres: (json['favorite_genres'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      likedSongs: (json['liked_songs'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       studyMinutes: json['study_minutes'] ?? 0,
       focusSessions: json['focus_sessions'] ?? 0,
       studyStreak: json['study_streak'] ?? 1,
-      achievements: (json['achievements'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      achievements: (json['achievements'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       isStudentArtist: json['is_student_artist'] ?? false,
     );
   }

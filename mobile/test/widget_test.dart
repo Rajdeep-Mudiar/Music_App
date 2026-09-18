@@ -4,7 +4,8 @@ import 'package:resonance/models/track_model.dart';
 import 'package:resonance/widgets/song_tile.dart';
 
 void main() {
-  testWidgets('SongTile renders title, artist and responds to tap', (WidgetTester tester) async {
+  testWidgets('SongTile renders title, artist and responds to tap',
+      (WidgetTester tester) async {
     bool tapped = false;
     final track = Track(
       id: 'test_1',

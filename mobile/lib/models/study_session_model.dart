@@ -21,7 +21,10 @@ class StudyStatsModel {
       totalSessions: json['total_sessions'] ?? 0,
       currentStreak: json['current_streak'] ?? 1,
       longestStreak: json['longest_streak'] ?? 1,
-      weeklyMinutes: (json['weekly_minutes'] as List<dynamic>?)?.map((e) => (e as num).toInt()).toList() ?? [0, 0, 0, 0, 0, 0, 0],
+      weeklyMinutes: (json['weekly_minutes'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [0, 0, 0, 0, 0, 0, 0],
       topStudyGenre: json['top_study_genre'] ?? 'Lo-Fi',
     );
   }

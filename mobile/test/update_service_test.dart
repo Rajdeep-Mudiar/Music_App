@@ -9,7 +9,8 @@ void main() {
         'minimum_supported_version': '1.0.0',
         'release_notes': 'Performance improvements and campus playlists.',
         'android': {
-          'download_url': 'https://github.com/resonance-app/resonance/releases/download/v1.0.3/app-release.apk'
+          'download_url':
+              'https://github.com/resonance-app/resonance/releases/download/v1.0.3/app-release.apk'
         }
       };
 

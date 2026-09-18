@@ -39,20 +39,23 @@ class SongTile extends StatelessWidget {
                         width: 52,
                         height: 52,
                         color: AppTheme.darkSurface,
-                        child: const Icon(Icons.music_note, color: AppTheme.textMuted),
+                        child: const Icon(Icons.music_note,
+                            color: AppTheme.textMuted),
                       ),
                       errorWidget: (c, u, e) => Container(
                         width: 52,
                         height: 52,
                         color: AppTheme.darkSurface,
-                        child: const Icon(Icons.music_note, color: AppTheme.textMuted),
+                        child: const Icon(Icons.music_note,
+                            color: AppTheme.textMuted),
                       ),
                     )
                   : Container(
                       width: 52,
                       height: 52,
                       color: AppTheme.darkSurface,
-                      child: const Icon(Icons.music_note, color: AppTheme.textMuted),
+                      child: const Icon(Icons.music_note,
+                          color: AppTheme.textMuted),
                     ),
             ),
             const SizedBox(width: 14),
@@ -69,7 +72,8 @@ class SongTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: isPlaying ? AppTheme.secondary : AppTheme.textPrimary,
+                      color:
+                          isPlaying ? AppTheme.secondary : AppTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -77,7 +81,8 @@ class SongTile extends StatelessWidget {
                     children: [
                       if (track.genre.isNotEmpty) ...[
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: AppTheme.primary.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(4),
@@ -114,12 +119,14 @@ class SongTile extends StatelessWidget {
             if (isPlaying)
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Icon(Icons.equalizer, color: AppTheme.secondary, size: 22),
+                child:
+                    Icon(Icons.equalizer, color: AppTheme.secondary, size: 22),
               ),
 
             // More Options
             IconButton(
-              icon: const Icon(Icons.more_vert, color: AppTheme.textMuted, size: 20),
+              icon: const Icon(Icons.more_vert,
+                  color: AppTheme.textMuted, size: 20),
               onPressed: onMoreTap ?? () {},
             ),
           ],

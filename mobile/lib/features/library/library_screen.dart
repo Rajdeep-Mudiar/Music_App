@@ -18,7 +18,8 @@ class LibraryScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Library', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Your Library',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: AppTheme.secondary),
@@ -33,7 +34,9 @@ class LibraryScreen extends ConsumerWidget {
           InkWell(
             onTap: () {
               if (studyAsync.value != null && studyAsync.value!.isNotEmpty) {
-                ref.read(playerProvider.notifier).playTrack(studyAsync.value![0], queue: studyAsync.value);
+                ref
+                    .read(playerProvider.notifier)
+                    .playTrack(studyAsync.value![0], queue: studyAsync.value);
               }
             },
             borderRadius: BorderRadius.circular(16),
@@ -55,7 +58,8 @@ class LibraryScreen extends ConsumerWidget {
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.favorite, color: Colors.white, size: 28),
+                    child: const Icon(Icons.favorite,
+                        color: Colors.white, size: 28),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -64,17 +68,23 @@ class LibraryScreen extends ConsumerWidget {
                       children: [
                         const Text(
                           'Liked Songs',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           '${user?.likedSongs.length ?? 8} songs saved',
-                          style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.8)),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white.withOpacity(0.8)),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.play_circle_fill, color: Colors.white, size: 38),
+                  const Icon(Icons.play_circle_fill,
+                      color: Colors.white, size: 38),
                 ],
               ),
             ),
@@ -92,7 +102,8 @@ class LibraryScreen extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatItem('Focus Minutes', '${user?.studyMinutes ?? 180}m'),
+                _buildStatItem(
+                    'Focus Minutes', '${user?.studyMinutes ?? 180}m'),
                 Container(height: 30, width: 1, color: AppTheme.darkBorder),
                 _buildStatItem('Focus Sessions', '${user?.focusSessions ?? 6}'),
                 Container(height: 30, width: 1, color: AppTheme.darkBorder),
@@ -106,8 +117,12 @@ class LibraryScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Playlists & Mixes', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-              TextButton(onPressed: () {}, child: const Text('See all', style: TextStyle(color: AppTheme.secondary))),
+              const Text('Playlists & Mixes',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text('See all',
+                      style: TextStyle(color: AppTheme.secondary))),
             ],
           ),
 
@@ -119,7 +134,9 @@ class LibraryScreen extends ConsumerWidget {
             color: const Color(0xFF6C5CE7),
             onTap: () {
               if (studyAsync.value != null && studyAsync.value!.isNotEmpty) {
-                ref.read(playerProvider.notifier).playTrack(studyAsync.value![0], queue: studyAsync.value);
+                ref
+                    .read(playerProvider.notifier)
+                    .playTrack(studyAsync.value![0], queue: studyAsync.value);
               }
             },
           ),
@@ -130,7 +147,9 @@ class LibraryScreen extends ConsumerWidget {
             color: const Color(0xFF00D2D3),
             onTap: () {
               if (studyAsync.value != null && studyAsync.value!.length > 1) {
-                ref.read(playerProvider.notifier).playTrack(studyAsync.value![1], queue: studyAsync.value);
+                ref
+                    .read(playerProvider.notifier)
+                    .playTrack(studyAsync.value![1], queue: studyAsync.value);
               }
             },
           ),
@@ -141,24 +160,30 @@ class LibraryScreen extends ConsumerWidget {
             color: const Color(0xFFFF7675),
             onTap: () {
               if (studyAsync.value != null && studyAsync.value!.length > 2) {
-                ref.read(playerProvider.notifier).playTrack(studyAsync.value![2], queue: studyAsync.value);
+                ref
+                    .read(playerProvider.notifier)
+                    .playTrack(studyAsync.value![2], queue: studyAsync.value);
               }
             },
           ),
 
           const SizedBox(height: 20),
-          const Text('Recently Played', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          const Text('Recently Played',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
 
           studyAsync.when(
             data: (tracks) => Column(
               children: tracks.take(4).map((t) {
-                final isPlaying = playerState.currentTrack?.id == t.id && playerState.isPlaying;
+                final isPlaying = playerState.currentTrack?.id == t.id &&
+                    playerState.isPlaying;
                 return SongTile(
                   track: t,
                   isPlaying: isPlaying,
                   onTap: () {
-                    ref.read(playerProvider.notifier).playTrack(t, queue: tracks);
+                    ref
+                        .read(playerProvider.notifier)
+                        .playTrack(t, queue: tracks);
                   },
                 );
               }).toList(),
@@ -174,9 +199,14 @@ class LibraryScreen extends ConsumerWidget {
   Widget _buildStatItem(String label, String value) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.secondary)),
+        Text(value,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: AppTheme.secondary)),
         const SizedBox(height: 2),
-        Text(label, style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+        Text(label,
+            style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
       ],
     );
   }
@@ -209,9 +239,13 @@ class LibraryScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                  Text(title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 14)),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                  Text(subtitle,
+                      style: const TextStyle(
+                          color: AppTheme.textSecondary, fontSize: 12)),
                 ],
               ),
             ),
@@ -231,15 +265,18 @@ class LibraryScreen extends ConsumerWidget {
         title: const Text('New Playlist'),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: 'Playlist name (e.g. Algo Sprint)'),
+          decoration: const InputDecoration(
+              hintText: 'Playlist name (e.g. Algo Sprint)'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(c);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Created playlist "${controller.text}"')),
+                SnackBar(
+                    content: Text('Created playlist "${controller.text}"')),
               );
             },
             child: const Text('Create'),

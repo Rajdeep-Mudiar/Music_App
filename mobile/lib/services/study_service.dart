@@ -58,14 +58,16 @@ class StudyService {
         id: 'room_dsa_focus',
         university: 'Gauhati University',
         name: 'DSA & LeetCode Sprint',
-        description: 'Silent focus room for algorithm practice and problem solving.',
+        description:
+            'Silent focus room for algorithm practice and problem solving.',
         activeStudentsCount: 14,
       ),
       StudyRoomModel(
         id: 'room_deep_work',
         university: 'Gauhati University',
         name: 'Quiet Campus Library Hall',
-        description: 'Rain acoustics and soft ambient lo-fi for reading & writing.',
+        description:
+            'Rain acoustics and soft ambient lo-fi for reading & writing.',
         activeStudentsCount: 22,
       ),
     ];

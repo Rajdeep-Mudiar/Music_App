@@ -32,7 +32,9 @@ class Track {
       artist: json['artist'] ?? 'Unknown Artist',
       artistId: json['artist_id']?.toString(),
       album: json['album'],
-      duration: json['duration'] is int ? json['duration'] : int.tryParse(json['duration']?.toString() ?? '0') ?? 0,
+      duration: json['duration'] is int
+          ? json['duration']
+          : int.tryParse(json['duration']?.toString() ?? '0') ?? 0,
       artworkUrl: json['artwork_url'],
       streamUrl: json['stream_url'] ?? '',
       genre: json['genre'] ?? 'General',

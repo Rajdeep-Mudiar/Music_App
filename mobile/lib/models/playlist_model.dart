@@ -21,7 +21,10 @@ class PlaylistSongItem {
       addedById: json['added_by_id'] ?? '',
       addedByName: json['added_by_name'] ?? '',
       votes: json['votes'] ?? 0,
-      voters: (json['voters'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      voters: (json['voters'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 }

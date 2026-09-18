@@ -36,8 +36,11 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
       );
     }
 
-    final totalSeconds = playerState.duration.inSeconds > 0 ? playerState.duration.inSeconds : track.duration;
-    final currentSeconds = playerState.position.inSeconds.clamp(0, totalSeconds);
+    final totalSeconds = playerState.duration.inSeconds > 0
+        ? playerState.duration.inSeconds
+        : track.duration;
+    final currentSeconds =
+        playerState.position.inSeconds.clamp(0, totalSeconds);
 
     return Scaffold(
       body: Container(
@@ -58,13 +61,22 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.white),
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          size: 30, color: Colors.white),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Column(
                       children: [
-                        const Text('PLAYING FROM CAMPUS', style: TextStyle(fontSize: 10, letterSpacing: 1.5, color: AppTheme.textMuted)),
-                        Text(track.genre, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.secondary)),
+                        const Text('PLAYING FROM CAMPUS',
+                            style: TextStyle(
+                                fontSize: 10,
+                                letterSpacing: 1.5,
+                                color: AppTheme.textMuted)),
+                        Text(track.genre,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.secondary)),
                       ],
                     ),
                     IconButton(
@@ -97,12 +109,14 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                             fit: BoxFit.cover,
                             errorWidget: (c, u, e) => Container(
                               color: AppTheme.darkCard,
-                              child: const Icon(Icons.music_note, color: AppTheme.secondary, size: 64),
+                              child: const Icon(Icons.music_note,
+                                  color: AppTheme.secondary, size: 64),
                             ),
                           )
                         : Container(
                             color: AppTheme.darkCard,
-                            child: const Icon(Icons.music_note, color: AppTheme.secondary, size: 64),
+                            child: const Icon(Icons.music_note,
+                                color: AppTheme.secondary, size: 64),
                           ),
                   ),
                 ),
@@ -120,14 +134,18 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                             track.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             track.artist,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 15, color: AppTheme.textSecondary),
+                            style: const TextStyle(
+                                fontSize: 15, color: AppTheme.textSecondary),
                           ),
                         ],
                       ),
@@ -155,8 +173,10 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                 SliderTheme(
                   data: SliderTheme.of(context).copyWith(
                     trackHeight: 3,
-                    thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
-                    overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                    thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 6),
+                    overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 14),
                     activeTrackColor: AppTheme.secondary,
                     inactiveTrackColor: AppTheme.darkBorder,
                     thumbColor: Colors.white,
@@ -164,9 +184,13 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                   child: Slider(
                     value: currentSeconds.toDouble(),
                     min: 0,
-                    max: totalSeconds.toDouble() > 0 ? totalSeconds.toDouble() : 100,
+                    max: totalSeconds.toDouble() > 0
+                        ? totalSeconds.toDouble()
+                        : 100,
                     onChanged: (val) {
-                      ref.read(playerProvider.notifier).seek(Duration(seconds: val.toInt()));
+                      ref
+                          .read(playerProvider.notifier)
+                          .seek(Duration(seconds: val.toInt()));
                     },
                   ),
                 ),
@@ -175,8 +199,12 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(_formatDuration(playerState.position), style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
-                      Text(_formatDuration(Duration(seconds: totalSeconds)), style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+                      Text(_formatDuration(playerState.position),
+                          style: const TextStyle(
+                              fontSize: 11, color: AppTheme.textMuted)),
+                      Text(_formatDuration(Duration(seconds: totalSeconds)),
+                          style: const TextStyle(
+                              fontSize: 11, color: AppTheme.textMuted)),
                     ],
                   ),
                 ),
@@ -187,12 +215,17 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.shuffle, color: _isShuffle ? AppTheme.secondary : AppTheme.textMuted),
+                      icon: Icon(Icons.shuffle,
+                          color: _isShuffle
+                              ? AppTheme.secondary
+                              : AppTheme.textMuted),
                       onPressed: () => setState(() => _isShuffle = !_isShuffle),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.skip_previous, size: 36, color: Colors.white),
-                      onPressed: () => ref.read(playerProvider.notifier).skipPrevious(),
+                      icon: const Icon(Icons.skip_previous,
+                          size: 36, color: Colors.white),
+                      onPressed: () =>
+                          ref.read(playerProvider.notifier).skipPrevious(),
                     ),
                     IconButton.filled(
                       iconSize: 42,
@@ -201,15 +234,23 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.all(12),
                       ),
-                      icon: Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
-                      onPressed: () => ref.read(playerProvider.notifier).togglePlay(),
+                      icon: Icon(playerState.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow),
+                      onPressed: () =>
+                          ref.read(playerProvider.notifier).togglePlay(),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.skip_next, size: 36, color: Colors.white),
-                      onPressed: () => ref.read(playerProvider.notifier).skipNext(),
+                      icon: const Icon(Icons.skip_next,
+                          size: 36, color: Colors.white),
+                      onPressed: () =>
+                          ref.read(playerProvider.notifier).skipNext(),
                     ),
                     IconButton(
-                      icon: Icon(Icons.repeat, color: _isRepeat ? AppTheme.secondary : AppTheme.textMuted),
+                      icon: Icon(Icons.repeat,
+                          color: _isRepeat
+                              ? AppTheme.secondary
+                              : AppTheme.textMuted),
                       onPressed: () => setState(() => _isRepeat = !_isRepeat),
                     ),
                   ],
@@ -218,9 +259,11 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
 
                 // Queue button
                 IconButton(
-                  icon: const Icon(Icons.queue_music, color: AppTheme.textSecondary),
+                  icon: const Icon(Icons.queue_music,
+                      color: AppTheme.textSecondary),
                   tooltip: 'Queue',
-                  onPressed: () => _showQueueBottomSheet(context, playerState.queue),
+                  onPressed: () =>
+                      _showQueueBottomSheet(context, playerState.queue),
                 ),
               ],
             ),
@@ -234,13 +277,17 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppTheme.darkSurface,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (c) => Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(child: Text('Playing Queue', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+            const Center(
+                child: Text('Playing Queue',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
             const SizedBox(height: 14),
             Expanded(
               child: ListView.builder(
@@ -248,10 +295,15 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
                 itemBuilder: (context, index) {
                   final t = queue[index];
                   return ListTile(
-                    leading: const Icon(Icons.music_note, color: AppTheme.secondary),
-                    title: Text(t.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    subtitle: Text(t.artist, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    trailing: Text(t.genre, style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+                    leading:
+                        const Icon(Icons.music_note, color: AppTheme.secondary),
+                    title: Text(t.title,
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                    subtitle: Text(t.artist,
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                    trailing: Text(t.genre,
+                        style: const TextStyle(
+                            fontSize: 11, color: AppTheme.textMuted)),
                   );
                 },
               ),
@@ -271,7 +323,8 @@ class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.playlist_add, color: AppTheme.secondary),
+              leading:
+                  const Icon(Icons.playlist_add, color: AppTheme.secondary),
               title: const Text('Add to Campus Playlist'),
               onTap: () => Navigator.pop(c),
             ),

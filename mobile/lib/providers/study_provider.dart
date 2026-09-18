@@ -18,7 +18,8 @@ class StudyTimerState {
   final int completedSessionsToday;
   final int streakDays;
 
-  double get progress => totalSeconds > 0 ? (totalSeconds - remainingSeconds) / totalSeconds : 0.0;
+  double get progress =>
+      totalSeconds > 0 ? (totalSeconds - remainingSeconds) / totalSeconds : 0.0;
   String get formattedTime {
     final m = (remainingSeconds ~/ 60).toString().padLeft(2, '0');
     final s = (remainingSeconds % 60).toString().padLeft(2, '0');
@@ -50,7 +51,8 @@ class StudyTimerState {
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       totalSeconds: totalSeconds ?? this.totalSeconds,
       mode: mode ?? this.mode,
-      completedSessionsToday: completedSessionsToday ?? this.completedSessionsToday,
+      completedSessionsToday:
+          completedSessionsToday ?? this.completedSessionsToday,
       streakDays: streakDays ?? this.streakDays,
     );
   }
@@ -107,7 +109,8 @@ class StudyTimerNotifier extends StateNotifier<StudyTimerState> {
     if (!state.isBreak) {
       // Focus session ended -> log to backend and switch to break
       final durationMin = state.totalSeconds ~/ 60;
-      _studyService.logSession(durationMinutes: durationMin, sessionType: 'pomodoro');
+      _studyService.logSession(
+          durationMinutes: durationMin, sessionType: 'pomodoro');
 
       final breakSecs = state.mode == PomodoroMode.fiftyTen ? 10 * 60 : 5 * 60;
       state = state.copyWith(
@@ -147,7 +150,8 @@ class StudyTimerNotifier extends StateNotifier<StudyTimerState> {
   }
 }
 
-final studyTimerProvider = StateNotifierProvider<StudyTimerNotifier, StudyTimerState>((ref) {
+final studyTimerProvider =
+    StateNotifierProvider<StudyTimerNotifier, StudyTimerState>((ref) {
   final service = ref.watch(studyServiceProvider);
   return StudyTimerNotifier(service);
 });

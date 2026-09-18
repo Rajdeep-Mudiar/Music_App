@@ -31,7 +31,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessageItem> _messages = [
     ChatMessageItem(
-      text: "Hello Rajdeep! I am your Resonance AI Music & Study Assistant. You can ask me to play coding beats, start a Pomodoro timer, or craft an exam study session playlist.",
+      text:
+          "Hello Rajdeep! I am your Resonance AI Music & Study Assistant. You can ask me to play coding beats, start a Pomodoro timer, or craft an exam study session playlist.",
       isUser: false,
     ),
   ];
@@ -64,7 +65,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
       if (name == 'start_study_session') {
         ref.read(studyTimerProvider.notifier).startTimer();
       } else if (name == 'play_song' && response.suggestedTracks.isNotEmpty) {
-        ref.read(playerProvider.notifier).playTrack(response.suggestedTracks[0], queue: response.suggestedTracks);
+        ref.read(playerProvider.notifier).playTrack(response.suggestedTracks[0],
+            queue: response.suggestedTracks);
       }
     }
 
@@ -89,7 +91,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
           children: [
             Icon(Icons.auto_awesome, color: AppTheme.secondary, size: 20),
             SizedBox(width: 8),
-            Text('AI Music Assistant', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('AI Music Assistant',
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -110,7 +113,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                   child: ActionChip(
                     label: Text(prompt),
                     backgroundColor: AppTheme.darkSurface,
-                    labelStyle: const TextStyle(fontSize: 12, color: AppTheme.primaryLight),
+                    labelStyle: const TextStyle(
+                        fontSize: 12, color: AppTheme.primaryLight),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: const BorderSide(color: AppTheme.darkBorder),
@@ -141,7 +145,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                 child: SizedBox(
                   width: 24,
                   height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.secondary),
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: AppTheme.secondary),
                 ),
               ),
             ),
@@ -161,7 +166,9 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                   onPressed: () {
                     _sendMessage("Play something relaxing for coding");
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Voice command detected: "Play something relaxing for coding"')),
+                      const SnackBar(
+                          content: Text(
+                              'Voice command detected: "Play something relaxing for coding"')),
                     );
                   },
                 ),
@@ -171,7 +178,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                     decoration: const InputDecoration(
                       hintText: 'Ask for focus tunes, timers, or playlists...',
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
                     onSubmitted: _sendMessage,
                   ),
@@ -194,11 +202,13 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.82),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.82),
         decoration: BoxDecoration(
           color: msg.isUser ? AppTheme.primary : AppTheme.darkCard,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: msg.isUser ? AppTheme.primary : AppTheme.darkBorder),
+          border: Border.all(
+              color: msg.isUser ? AppTheme.primary : AppTheme.darkBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +228,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                 spacing: 6,
                 children: msg.toolCalls.map((tool) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: AppTheme.secondary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(6),
@@ -226,11 +237,15 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.bolt, color: AppTheme.secondary, size: 14),
+                        const Icon(Icons.bolt,
+                            color: AppTheme.secondary, size: 14),
                         const SizedBox(width: 4),
                         Text(
                           'Executed: ${tool['tool']}()',
-                          style: const TextStyle(fontSize: 11, color: AppTheme.secondary, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 11,
+                              color: AppTheme.secondary,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -244,7 +259,9 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
               ...msg.tracks.take(2).map((t) {
                 return GestureDetector(
                   onTap: () {
-                    ref.read(playerProvider.notifier).playTrack(t, queue: msg.tracks);
+                    ref
+                        .read(playerProvider.notifier)
+                        .playTrack(t, queue: msg.tracks);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 6),
@@ -255,14 +272,16 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.play_circle_fill, color: AppTheme.secondary, size: 22),
+                        const Icon(Icons.play_circle_fill,
+                            color: AppTheme.secondary, size: 22),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             '${t.title} - ${t.artist}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],

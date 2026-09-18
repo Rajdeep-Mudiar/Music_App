@@ -49,13 +49,15 @@ class HomeScreen extends ConsumerWidget {
                 color: AppTheme.primary.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.auto_awesome, color: AppTheme.secondary, size: 20),
+              child: const Icon(Icons.auto_awesome,
+                  color: AppTheme.secondary, size: 20),
             ),
             tooltip: 'AI Music Assistant',
             onPressed: () => context.push('/ai-assistant'),
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_none, color: AppTheme.textPrimary),
+            icon: const Icon(Icons.notifications_none,
+                color: AppTheme.textPrimary),
             onPressed: () {},
           ),
         ],
@@ -92,7 +94,8 @@ class HomeScreen extends ConsumerWidget {
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.local_fire_department, color: Colors.white, size: 28),
+                      child: const Icon(Icons.local_fire_department,
+                          color: Colors.white, size: 28),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -122,14 +125,18 @@ class HomeScreen extends ConsumerWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppTheme.primary,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
                       ),
                       onPressed: () {
                         // Switch to Study tab (index 2)
                         DefaultTabController.of(context).animateTo(2);
                       },
-                      child: const Text('Focus', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                      child: const Text('Focus',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                   ],
                 ),
@@ -141,7 +148,10 @@ class HomeScreen extends ConsumerWidget {
               padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text(
                 'Trending at Your University',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textPrimary),
               ),
             ),
             SizedBox(
@@ -155,7 +165,9 @@ class HomeScreen extends ConsumerWidget {
                     final t = tracks[index];
                     return GestureDetector(
                       onTap: () {
-                        ref.read(playerProvider.notifier).playTrack(t, queue: tracks);
+                        ref
+                            .read(playerProvider.notifier)
+                            .playTrack(t, queue: tracks);
                       },
                       child: Container(
                         width: 130,
@@ -174,7 +186,8 @@ class HomeScreen extends ConsumerWidget {
                                   width: 130,
                                   height: 130,
                                   color: AppTheme.darkCard,
-                                  child: const Icon(Icons.music_note, color: AppTheme.secondary),
+                                  child: const Icon(Icons.music_note,
+                                      color: AppTheme.secondary),
                                 ),
                               ),
                             ),
@@ -183,13 +196,15 @@ class HomeScreen extends ConsumerWidget {
                               t.title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 13),
                             ),
                             Text(
                               t.artist,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
+                              style: const TextStyle(
+                                  color: AppTheme.textSecondary, fontSize: 11),
                             ),
                           ],
                         ),
@@ -197,8 +212,11 @@ class HomeScreen extends ConsumerWidget {
                     );
                   },
                 ),
-                loading: () => const Center(child: CircularProgressIndicator(color: AppTheme.secondary)),
-                error: (e, s) => const Center(child: Text('Unable to load trending tracks')),
+                loading: () => const Center(
+                    child:
+                        CircularProgressIndicator(color: AppTheme.secondary)),
+                error: (e, s) =>
+                    const Center(child: Text('Unable to load trending tracks')),
               ),
             ),
 
@@ -207,23 +225,31 @@ class HomeScreen extends ConsumerWidget {
               padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
               child: Text(
                 'Made for Your Study & Focus',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textPrimary),
               ),
             ),
             studyAsync.when(
               data: (tracks) => Column(
                 children: tracks.take(5).map((track) {
-                  final isCurrentlyPlaying = playerState.currentTrack?.id == track.id && playerState.isPlaying;
+                  final isCurrentlyPlaying =
+                      playerState.currentTrack?.id == track.id &&
+                          playerState.isPlaying;
                   return SongTile(
                     track: track,
                     isPlaying: isCurrentlyPlaying,
                     onTap: () {
-                      ref.read(playerProvider.notifier).playTrack(track, queue: tracks);
+                      ref
+                          .read(playerProvider.notifier)
+                          .playTrack(track, queue: tracks);
                     },
                   );
                 }).toList(),
               ),
-              loading: () => const Center(child: CircularProgressIndicator(color: AppTheme.primary)),
+              loading: () => const Center(
+                  child: CircularProgressIndicator(color: AppTheme.primary)),
               error: (e, s) => const SizedBox.shrink(),
             ),
 
@@ -232,7 +258,10 @@ class HomeScreen extends ConsumerWidget {
               padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
               child: Text(
                 'Campus Playlists',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textPrimary),
               ),
             ),
             Padding(
@@ -246,8 +275,11 @@ class HomeScreen extends ConsumerWidget {
                       color: const Color(0xFF6C5CE7),
                       icon: Icons.code,
                       onTap: () {
-                        if (studyAsync.value != null && studyAsync.value!.isNotEmpty) {
-                          ref.read(playerProvider.notifier).playTrack(studyAsync.value![0], queue: studyAsync.value);
+                        if (studyAsync.value != null &&
+                            studyAsync.value!.isNotEmpty) {
+                          ref.read(playerProvider.notifier).playTrack(
+                              studyAsync.value![0],
+                              queue: studyAsync.value);
                         }
                       },
                     ),
@@ -260,8 +292,11 @@ class HomeScreen extends ConsumerWidget {
                       color: const Color(0xFF00D2D3),
                       icon: Icons.water_drop,
                       onTap: () {
-                        if (studyAsync.value != null && studyAsync.value!.length > 1) {
-                          ref.read(playerProvider.notifier).playTrack(studyAsync.value![1], queue: studyAsync.value);
+                        if (studyAsync.value != null &&
+                            studyAsync.value!.length > 1) {
+                          ref.read(playerProvider.notifier).playTrack(
+                              studyAsync.value![1],
+                              queue: studyAsync.value);
                         }
                       },
                     ),

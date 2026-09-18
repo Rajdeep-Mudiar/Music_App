@@ -33,7 +33,8 @@ class UpdateDialog extends StatelessWidget {
                 color: AppTheme.primary.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.system_update, color: AppTheme.secondary, size: 24),
+              child: const Icon(Icons.system_update,
+                  color: AppTheme.secondary, size: 24),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -98,7 +99,8 @@ class UpdateDialog extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.warning_amber_rounded, color: AppTheme.accent, size: 20),
+                    Icon(Icons.warning_amber_rounded,
+                        color: AppTheme.accent, size: 20),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -118,13 +120,15 @@ class UpdateDialog extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Later', style: TextStyle(color: AppTheme.textMuted)),
+              child: const Text('Later',
+                  style: TextStyle(color: AppTheme.textMuted)),
             ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primary,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
             ),
             onPressed: () {
               updateService.launchUpdateUrl(versionInfo.downloadUrl);

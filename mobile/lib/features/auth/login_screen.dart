@@ -44,7 +44,8 @@ class LoginScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.graphic_eq, color: Colors.white, size: 50),
+                  child: const Icon(Icons.graphic_eq,
+                      color: Colors.white, size: 50),
                 ),
                 const SizedBox(height: 24),
 
@@ -73,7 +74,8 @@ class LoginScreen extends ConsumerWidget {
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Text(
                       authState.errorMessage!,
-                      style: const TextStyle(color: AppTheme.accent, fontSize: 13),
+                      style:
+                          const TextStyle(color: AppTheme.accent, fontSize: 13),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -86,12 +88,14 @@ class LoginScreen extends ConsumerWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black87,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
                     ),
                     onPressed: authState.isLoading
                         ? null
                         : () async {
-                            final success = await authNotifier.loginWithGoogle();
+                            final success =
+                                await authNotifier.loginWithGoogle();
                             if (success && context.mounted) {
                               context.go('/');
                             }
@@ -100,16 +104,19 @@ class LoginScreen extends ConsumerWidget {
                         ? const SizedBox(
                             width: 24,
                             height: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.black),
                           )
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.g_mobiledata, size: 30, color: Colors.red),
+                              const Icon(Icons.g_mobiledata,
+                                  size: 30, color: Colors.red),
                               const SizedBox(width: 12),
                               const Text(
                                 'Continue with Google',
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -123,8 +130,10 @@ class LoginScreen extends ConsumerWidget {
                   height: 52,
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppTheme.secondary, width: 1.5),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      side: const BorderSide(
+                          color: AppTheme.secondary, width: 1.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
                     ),
                     onPressed: authState.isLoading
                         ? null
@@ -141,7 +150,10 @@ class LoginScreen extends ConsumerWidget {
                         SizedBox(width: 10),
                         Text(
                           'Quick Campus Demo Login',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.secondary),
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.secondary),
                         ),
                       ],
                     ),
@@ -152,7 +164,8 @@ class LoginScreen extends ConsumerWidget {
                 const Text(
                   'By signing in, you agree to our Student Community Guidelines. Streaming legally licensed open audio and university curated content.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 11, color: AppTheme.textMuted, height: 1.4),
+                  style: TextStyle(
+                      fontSize: 11, color: AppTheme.textMuted, height: 1.4),
                 ),
                 const SizedBox(height: 20),
               ],

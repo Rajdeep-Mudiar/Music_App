@@ -29,8 +29,11 @@ class PostModel {
     this.isLikedByMe = false,
   });
 
-  factory PostModel.fromJson(Map<String, dynamic> json, {String? currentUserId}) {
-    List<String> likesList = (json['likes'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+  factory PostModel.fromJson(Map<String, dynamic> json,
+      {String? currentUserId}) {
+    List<String> likesList =
+        (json['likes'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+            [];
     return PostModel(
       id: json['id'] ?? '',
       communityId: json['community_id'] ?? '',
@@ -39,7 +42,9 @@ class PostModel {
       authorName: json['author_name'] ?? 'Student',
       authorImage: json['author_image'],
       content: json['content'] ?? '',
-      songAttachment: json['song_attachment'] != null ? Track.fromJson(json['song_attachment']) : null,
+      songAttachment: json['song_attachment'] != null
+          ? Track.fromJson(json['song_attachment'])
+          : null,
       likes: likesList,
       likesCount: json['likes_count'] ?? likesList.length,
       commentsCount: json['comments_count'] ?? 0,

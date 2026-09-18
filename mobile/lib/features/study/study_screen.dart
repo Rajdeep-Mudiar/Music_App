@@ -18,7 +18,8 @@ class StudyScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Study Mode', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Study Mode',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -30,11 +31,15 @@ class StudyScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.local_fire_department, color: Color(0xFFFF7675), size: 18),
+                const Icon(Icons.local_fire_department,
+                    color: Color(0xFFFF7675), size: 18),
                 const SizedBox(width: 4),
                 Text(
                   '${timerState.streakDays} Days',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.white),
                 ),
               ],
             ),
@@ -79,7 +84,10 @@ class StudyScreen extends ConsumerWidget {
                 gradient: AppTheme.studyGradient,
                 boxShadow: [
                   BoxShadow(
-                    color: (timerState.isBreak ? AppTheme.neonGreen : AppTheme.primary).withOpacity(0.35),
+                    color: (timerState.isBreak
+                            ? AppTheme.neonGreen
+                            : AppTheme.primary)
+                        .withOpacity(0.35),
                     blurRadius: 28,
                     spreadRadius: 2,
                   ),
@@ -96,7 +104,9 @@ class StudyScreen extends ConsumerWidget {
                       strokeWidth: 8,
                       backgroundColor: AppTheme.darkBorder,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        timerState.isBreak ? AppTheme.neonGreen : AppTheme.secondary,
+                        timerState.isBreak
+                            ? AppTheme.neonGreen
+                            : AppTheme.secondary,
                       ),
                     ),
                   ),
@@ -104,9 +114,13 @@ class StudyScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
-                          color: (timerState.isBreak ? AppTheme.neonGreen : AppTheme.secondary).withOpacity(0.2),
+                          color: (timerState.isBreak
+                                  ? AppTheme.neonGreen
+                                  : AppTheme.secondary)
+                              .withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -115,7 +129,9 @@ class StudyScreen extends ConsumerWidget {
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.2,
-                            color: timerState.isBreak ? AppTheme.neonGreen : AppTheme.secondary,
+                            color: timerState.isBreak
+                                ? AppTheme.neonGreen
+                                : AppTheme.secondary,
                           ),
                         ),
                       ),
@@ -132,7 +148,8 @@ class StudyScreen extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Text(
                         'Completed: ${timerState.completedSessionsToday} sessions',
-                        style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                        style: const TextStyle(
+                            fontSize: 11, color: AppTheme.textMuted),
                       ),
                     ],
                   ),
@@ -149,10 +166,12 @@ class StudyScreen extends ConsumerWidget {
               IconButton.filled(
                 iconSize: 32,
                 style: IconButton.styleFrom(
-                  backgroundColor: timerState.isRunning ? AppTheme.accent : AppTheme.primary,
+                  backgroundColor:
+                      timerState.isRunning ? AppTheme.accent : AppTheme.primary,
                   padding: const EdgeInsets.all(16),
                 ),
-                icon: Icon(timerState.isRunning ? Icons.pause : Icons.play_arrow),
+                icon:
+                    Icon(timerState.isRunning ? Icons.pause : Icons.play_arrow),
                 onPressed: () {
                   if (timerState.isRunning) {
                     timerNotifier.pauseTimer();
@@ -165,7 +184,8 @@ class StudyScreen extends ConsumerWidget {
               IconButton.outlined(
                 iconSize: 24,
                 style: IconButton.styleFrom(
-                  side: const BorderSide(color: AppTheme.darkBorder, width: 1.5),
+                  side:
+                      const BorderSide(color: AppTheme.darkBorder, width: 1.5),
                   padding: const EdgeInsets.all(14),
                 ),
                 icon: const Icon(Icons.refresh, color: AppTheme.textSecondary),
@@ -178,7 +198,10 @@ class StudyScreen extends ConsumerWidget {
           // Focus Soundscapes Selector
           const Text(
             'Focus Soundscapes',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+            style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textPrimary),
           ),
           const SizedBox(height: 10),
           studyTracksAsync.when(
@@ -189,20 +212,27 @@ class StudyScreen extends ConsumerWidget {
                 itemCount: tracks.length,
                 itemBuilder: (context, index) {
                   final t = tracks[index];
-                  final isCurrent = playerState.currentTrack?.id == t.id && playerState.isPlaying;
+                  final isCurrent = playerState.currentTrack?.id == t.id &&
+                      playerState.isPlaying;
                   return GestureDetector(
                     onTap: () {
-                      ref.read(playerProvider.notifier).playTrack(t, queue: tracks);
+                      ref
+                          .read(playerProvider.notifier)
+                          .playTrack(t, queue: tracks);
                     },
                     child: Container(
                       width: 140,
                       margin: const EdgeInsets.only(right: 10),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: isCurrent ? AppTheme.primary.withOpacity(0.3) : AppTheme.darkSurface,
+                        color: isCurrent
+                            ? AppTheme.primary.withOpacity(0.3)
+                            : AppTheme.darkSurface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isCurrent ? AppTheme.secondary : AppTheme.darkBorder,
+                          color: isCurrent
+                              ? AppTheme.secondary
+                              : AppTheme.darkBorder,
                           width: isCurrent ? 1.5 : 1,
                         ),
                       ),
@@ -214,13 +244,16 @@ class StudyScreen extends ConsumerWidget {
                             children: [
                               Icon(
                                 isCurrent ? Icons.volume_up : Icons.headphones,
-                                color: isCurrent ? AppTheme.secondary : AppTheme.primaryLight,
+                                color: isCurrent
+                                    ? AppTheme.secondary
+                                    : AppTheme.primaryLight,
                                 size: 18,
                               ),
                               const Spacer(),
                               Text(
                                 t.genre,
-                                style: const TextStyle(fontSize: 10, color: AppTheme.textMuted),
+                                style: const TextStyle(
+                                    fontSize: 10, color: AppTheme.textMuted),
                               ),
                             ],
                           ),
@@ -229,13 +262,15 @@ class StudyScreen extends ConsumerWidget {
                             t.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                           Text(
                             t.artist,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+                            style: const TextStyle(
+                                color: AppTheme.textSecondary, fontSize: 10),
                           ),
                         ],
                       ),
@@ -252,7 +287,10 @@ class StudyScreen extends ConsumerWidget {
           // Active Campus Study Rooms
           const Text(
             'Virtual Campus Study Rooms',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+            style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textPrimary),
           ),
           const SizedBox(height: 10),
           studyRoomsAsync.when(
@@ -274,30 +312,42 @@ class StudyScreen extends ConsumerWidget {
                           color: AppTheme.secondary.withOpacity(0.15),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.school, color: AppTheme.secondary, size: 20),
+                        child: const Icon(Icons.school,
+                            color: AppTheme.secondary, size: 20),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(r.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                            Text(r.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14)),
                             const SizedBox(height: 2),
-                            Text(r.description, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                            Text(r.description,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textSecondary)),
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppTheme.darkCard,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.people, size: 14, color: AppTheme.textMuted),
+                            const Icon(Icons.people,
+                                size: 14, color: AppTheme.textMuted),
                             const SizedBox(width: 4),
-                            Text('${r.activeStudentsCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text('${r.activeStudentsCount}',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -314,7 +364,10 @@ class StudyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildModeButton({required String title, required bool isSelected, required VoidCallback onTap}) {
+  Widget _buildModeButton(
+      {required String title,
+      required bool isSelected,
+      required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -322,7 +375,8 @@ class StudyScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primary : AppTheme.darkSurface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? AppTheme.primary : AppTheme.darkBorder),
+          border: Border.all(
+              color: isSelected ? AppTheme.primary : AppTheme.darkBorder),
         ),
         child: Text(
           title,

@@ -21,7 +21,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool _isLoading = false;
   String _selectedFilter = 'All';
 
-  final List<String> _filters = ['All', 'Focus & Lo-Fi', 'Campus Beats', 'Classical', 'Podcasts'];
+  final List<String> _filters = [
+    'All',
+    'Focus & Lo-Fi',
+    'Campus Beats',
+    'Classical',
+    'Podcasts'
+  ];
 
   final List<String> _trendingSearches = [
     'Lo-Fi Study',
@@ -68,7 +74,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search', style: TextStyle(fontWeight: FontWeight.bold)),
+        title:
+            const Text('Search', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Column(
         children: [
@@ -83,7 +90,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 prefixIcon: const Icon(Icons.search, color: AppTheme.secondary),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear, color: AppTheme.textMuted),
+                        icon:
+                            const Icon(Icons.clear, color: AppTheme.textMuted),
                         onPressed: () {
                           _searchController.clear();
                           _onSearchChanged('');
@@ -114,11 +122,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     labelStyle: TextStyle(
                       color: isSelected ? Colors.white : AppTheme.textSecondary,
                       fontSize: 12,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(color: isSelected ? AppTheme.primary : AppTheme.darkBorder),
+                      side: BorderSide(
+                          color: isSelected
+                              ? AppTheme.primary
+                              : AppTheme.darkBorder),
                     ),
                     onSelected: (val) {
                       setState(() => _selectedFilter = filter);
@@ -137,25 +149,31 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           // Body: Results or Trending Searches
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: AppTheme.secondary))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppTheme.secondary))
                 : _searchResults.isNotEmpty
                     ? ListView.builder(
                         padding: const EdgeInsets.only(bottom: 90),
                         itemCount: _searchResults.length,
                         itemBuilder: (context, index) {
                           final track = _searchResults[index];
-                          final isPlaying = playerState.currentTrack?.id == track.id && playerState.isPlaying;
+                          final isPlaying =
+                              playerState.currentTrack?.id == track.id &&
+                                  playerState.isPlaying;
                           return SongTile(
                             track: track,
                             isPlaying: isPlaying,
                             onTap: () {
-                              ref.read(playerProvider.notifier).playTrack(track, queue: _searchResults);
+                              ref
+                                  .read(playerProvider.notifier)
+                                  .playTrack(track, queue: _searchResults);
                             },
                           );
                         },
                       )
                     : ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
                         children: [
                           const Text(
                             'Trending Campus Searches',
@@ -173,10 +191,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               return ActionChip(
                                 label: Text(term),
                                 backgroundColor: AppTheme.darkSurface,
-                                labelStyle: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+                                labelStyle: const TextStyle(
+                                    color: AppTheme.textSecondary,
+                                    fontSize: 13),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  side: const BorderSide(color: AppTheme.darkBorder),
+                                  side: const BorderSide(
+                                      color: AppTheme.darkBorder),
                                 ),
                                 onPressed: () {
                                   _searchController.text = term;

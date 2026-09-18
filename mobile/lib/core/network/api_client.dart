@@ -34,7 +34,8 @@ class ApiClient {
             if (refreshToken != null && refreshToken.isNotEmpty) {
               try {
                 // Attempt token refresh
-                final refreshDio = Dio(BaseOptions(baseUrl: ApiConstants.baseUrl));
+                final refreshDio =
+                    Dio(BaseOptions(baseUrl: ApiConstants.baseUrl));
                 final res = await refreshDio.post(
                   ApiConstants.authRefresh,
                   data: {'refresh_token': refreshToken},
@@ -49,7 +50,8 @@ class ApiClient {
 
                   // Retry original request
                   final retryOptions = error.requestOptions;
-                  retryOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+                  retryOptions.headers['Authorization'] =
+                      'Bearer $newAccessToken';
                   final retryRes = await dio.fetch(retryOptions);
                   return handler.resolve(retryRes);
                 }

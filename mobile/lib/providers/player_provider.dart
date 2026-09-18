@@ -107,7 +107,8 @@ class PlayerNotifier extends StateNotifier<PlayerStateModel> {
   }
 }
 
-final playerProvider = StateNotifierProvider<PlayerNotifier, PlayerStateModel>((ref) {
+final playerProvider =
+    StateNotifierProvider<PlayerNotifier, PlayerStateModel>((ref) {
   final audioService = ref.watch(audioPlayerServiceProvider);
   return PlayerNotifier(audioService);
 });

@@ -17,7 +17,10 @@ class AIResponse {
     var tracksRaw = json['suggested_tracks'] as List<dynamic>? ?? [];
     return AIResponse(
       reply: json['reply'] ?? '',
-      toolCalls: (json['tool_calls'] as List<dynamic>?)?.map((e) => e as Map<String, dynamic>).toList() ?? [],
+      toolCalls: (json['tool_calls'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          [],
       suggestedTracks: tracksRaw.map((e) => Track.fromJson(e)).toList(),
     );
   }
@@ -28,7 +31,8 @@ class AIService {
 
   AIService({required this.apiClient});
 
-  Future<AIResponse> sendChatMessage(String message, {String? currentTrackId}) async {
+  Future<AIResponse> sendChatMessage(String message,
+      {String? currentTrackId}) async {
     try {
       final res = await apiClient.dio.post(
         ApiConstants.aiChat,
@@ -44,7 +48,8 @@ class AIService {
 
     // Fallback response with study tracks
     return AIResponse(
-      reply: "Here's a curated selection of campus focus beats to keep your workflow steady!",
+      reply:
+          "Here's a curated selection of campus focus beats to keep your workflow steady!",
       suggestedTracks: [
         Track(
           id: 'study_lofi_1',
@@ -52,15 +57,18 @@ class AIService {
           artist: 'Resonance Focus Lab',
           album: 'Semester Beats Vol. 1',
           duration: 185,
-          artworkUrl: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=500',
-          streamUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
+          artworkUrl:
+              'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=500',
+          streamUrl:
+              'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
           genre: 'Lo-Fi',
         ),
       ],
     );
   }
 
-  Future<Map<String, dynamic>?> generateStudyPlan(String prompt, {double hours = 2.0}) async {
+  Future<Map<String, dynamic>?> generateStudyPlan(String prompt,
+      {double hours = 2.0}) async {
     try {
       final res = await apiClient.dio.post(
         ApiConstants.aiGeneratePlaylist,

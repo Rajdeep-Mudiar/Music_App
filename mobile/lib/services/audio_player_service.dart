@@ -18,7 +18,9 @@ class AudioPlayerService {
   Stream<Duration?> get durationStream => _player.durationStream;
   Stream<PlayerState> get playerStateStream => _player.playerStateStream;
 
-  Track? get currentTrack => _currentIndex >= 0 && _currentIndex < _queue.length ? _queue[_currentIndex] : null;
+  Track? get currentTrack => _currentIndex >= 0 && _currentIndex < _queue.length
+      ? _queue[_currentIndex]
+      : null;
   List<Track> get queue => List.unmodifiable(_queue);
   int get currentIndex => _currentIndex;
   bool get isPlaying => _player.playing;
@@ -56,7 +58,8 @@ class AudioPlayerService {
     } catch (e) {
       // If network stream error, fallback gracefully to a reliable study stream
       try {
-        const fallbackUrl = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
+        const fallbackUrl =
+            "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
         await _player.setUrl(fallbackUrl);
         await _player.play();
       } catch (_) {}

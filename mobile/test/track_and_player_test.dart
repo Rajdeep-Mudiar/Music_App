@@ -10,7 +10,8 @@ void main() {
         'title': 'Midnight Campus Lo-Fi',
         'artist': 'Resonance Focus Lab',
         'duration': 185,
-        'stream_url': 'https://api.audius.co/v1/tracks/audius_track_123/stream?app_name=ResonanceCampus',
+        'stream_url':
+            'https://api.audius.co/v1/tracks/audius_track_123/stream?app_name=ResonanceCampus',
         'genre': 'Lo-Fi',
         'provider': 'audius',
       };

@@ -18,7 +18,9 @@ class MiniPlayer extends ConsumerWidget {
     }
 
     final progress = playerState.duration.inMilliseconds > 0
-        ? (playerState.position.inMilliseconds / playerState.duration.inMilliseconds).clamp(0.0, 1.0)
+        ? (playerState.position.inMilliseconds /
+                playerState.duration.inMilliseconds)
+            .clamp(0.0, 1.0)
         : 0.0;
 
     return GestureDetector(
@@ -45,7 +47,8 @@ class MiniPlayer extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: Row(
                   children: [
                     // Artwork
@@ -61,14 +64,16 @@ class MiniPlayer extends ConsumerWidget {
                                 width: 44,
                                 height: 44,
                                 color: AppTheme.darkCard,
-                                child: const Icon(Icons.music_note, color: AppTheme.primaryLight, size: 20),
+                                child: const Icon(Icons.music_note,
+                                    color: AppTheme.primaryLight, size: 20),
                               ),
                             )
                           : Container(
                               width: 44,
                               height: 44,
                               color: AppTheme.darkCard,
-                              child: const Icon(Icons.music_note, color: AppTheme.primaryLight, size: 20),
+                              child: const Icon(Icons.music_note,
+                                  color: AppTheme.primaryLight, size: 20),
                             ),
                     ),
                     const SizedBox(width: 12),
@@ -105,7 +110,9 @@ class MiniPlayer extends ConsumerWidget {
                     // Play/Pause
                     IconButton(
                       icon: Icon(
-                        playerState.isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                        playerState.isPlaying
+                            ? Icons.pause_circle_filled
+                            : Icons.play_circle_filled,
                         color: AppTheme.secondary,
                         size: 34,
                       ),
@@ -133,7 +140,8 @@ class MiniPlayer extends ConsumerWidget {
               LinearProgressIndicator(
                 value: progress,
                 backgroundColor: Colors.transparent,
-                valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.secondary),
+                valueColor:
+                    const AlwaysStoppedAnimation<Color>(AppTheme.secondary),
                 minHeight: 2.5,
               ),
             ],

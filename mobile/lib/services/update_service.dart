@@ -30,13 +30,15 @@ class UpdateService {
   Future<UpdateCheckResult> checkForUpdates() async {
     try {
       final packageInfo = await PackageInfo.fromPlatform();
-      final currentVersion = packageInfo.version.isNotEmpty ? packageInfo.version : '1.0.0';
+      final currentVersion =
+          packageInfo.version.isNotEmpty ? packageInfo.version : '1.0.0';
 
       final res = await apiClient.dio.get(ApiConstants.appVersion);
       if (res.statusCode == 200) {
         final versionInfo = AppVersionModel.fromJson(res.data);
 
-        if (_isVersionLower(currentVersion, versionInfo.minimumSupportedVersion)) {
+        if (_isVersionLower(
+            currentVersion, versionInfo.minimumSupportedVersion)) {
           return UpdateCheckResult(
             status: UpdateStatus.forceUpdateRequired,
             currentVersion: currentVersion,
@@ -60,8 +62,10 @@ class UpdateService {
 
   bool _isVersionLower(String current, String target) {
     try {
-      List<int> currentParts = current.split('.').map((e) => int.tryParse(e) ?? 0).toList();
-      List<int> targetParts = target.split('.').map((e) => int.tryParse(e) ?? 0).toList();
+      List<int> currentParts =
+          current.split('.').map((e) => int.tryParse(e) ?? 0).toList();
+      List<int> targetParts =
+          target.split('.').map((e) => int.tryParse(e) ?? 0).toList();
 
       while (currentParts.length < 3) {
         currentParts.add(0);
