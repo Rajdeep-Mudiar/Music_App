@@ -332,3 +332,123 @@ class AudiusProvider(BaseMusicProvider):
         online_results = await self.search_tracks(f"study {vibe}", limit=limit)
         combined = matched + [t for t in online_results if t.id not in [m.id for m in matched]]
         return combined if combined else CURATED_STUDY_TRACKS
+
+    async def get_track(self, track_id: str) -> Optional[Track]:
+        # Check curated list
+        for t in CURATED_STUDY_TRACKS:
+            if t.id == track_id:
+                return t
+
+        if track_id.startswith("itunes_"):
+            raw_id = track_id.replace("itunes_", "")
+            try:
+                async with httpx.AsyncClient(timeout=4.0) as client:
+                    res = await client.get(
+                        "https://itunes.apple.com/lookup",
+                        params={"id": raw_id}
+                    )
+                    if res.status_code == 200:
+                        results = res.json().get("results", [])
+                        if results:
+                            return self._parse_itunes_track(results[0])
+            except Exception:
+                pass
+
+        try:
+            async with httpx.AsyncClient(timeout=6.0) as client:
+                res = await client.get(
+                    f"{self.base_url}/v1/tracks/{track_id}",
+                    params={"app_name": self.app_name}
+                )
+                if res.status_code == 200:
+                    item = res.json().get("data")
+                    if item:
+                        return self._parse_track(item)
+        except Exception as e:
+            logger.warning(f"Failed to fetch track {track_id}: {e}")
+        return None
+
+    async def get_stream_url(self, track_id: str) -> str:
+        for t in CURATED_STUDY_TRACKS:
+            if t.id == track_id:
+                return t.stream_url
+        if track_id.startswith("itunes_"):
+            track = await self.get_track(track_id)
+            if track:
+                return track.stream_url
+        return f"{self.base_url}/v1/tracks/{track_id}/stream?app_name={self.app_name}"
+
+    async def search_artists(self, query: str, limit: int = 10) -> List[Artist]:
+        try:
+            async with httpx.AsyncClient(timeout=4.0) as client:
+                res = await client.get(
+                    "https://itunes.apple.com/search",
+                    params={"term": query, "entity": "musicArtist", "limit": limit}
+                )
+                if res.status_code == 200:
+                    data = res.json().get("results", [])
+                    artists = []
+                    for item in data:
+                        artists.append(
+                            Artist(
+                                id=str(item.get("artistId", "")),
+                                name=item.get("artistName") or "Artist",
+                                bio=item.get("primaryGenreName") or "Artist",
+                                artwork_url="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500",
+                                followers_count=1000,
+                                is_student_artist=False
+                            )
+                        )
+                    if artists:
+                        return artists
+        except Exception:
+            pass
+
+        try:
+            async with httpx.AsyncClient(timeout=6.0) as client:
+                res = await client.get(
+                    f"{self.base_url}/v1/users/search",
+                    params={"query": query, "app_name": self.app_name, "limit": limit}
+                )
+                if res.status_code == 200:
+                    data = res.json().get("data", [])
+                    artists = []
+                    for user in data:
+                        profile_pic = (user.get("profile_picture") or {}).get("480x480")
+                        artists.append(
+                            Artist(
+                                id=str(user.get("id")),
+                                name=user.get("name") or "Artist",
+                                bio=user.get("bio") or "",
+                                artwork_url=profile_pic or "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500",
+                                followers_count=int(user.get("follower_count", 0)),
+                                is_student_artist=False
+                            )
+                        )
+                    return artists
+        except Exception as e:
+            logger.warning(f"Search artists failed: {e}")
+        return []
+
+    async def get_artist(self, artist_id: str) -> Optional[Artist]:
+        try:
+            async with httpx.AsyncClient(timeout=6.0) as client:
+                res = await client.get(
+                    f"{self.base_url}/v1/users/{artist_id}",
+                    params={"app_name": self.app_name}
+                )
+                if res.status_code == 200:
+                    user = res.json().get("data")
+                    if user:
+                        profile_pic = (user.get("profile_picture") or {}).get("480x480")
+                        return Artist(
+                            id=str(user.get("id")),
+                            name=user.get("name") or "Artist",
+                            bio=user.get("bio") or "",
+                            artwork_url=profile_pic or "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500",
+                            followers_count=int(user.get("follower_count", 0)),
+                            is_student_artist=False
+                        )
+        except Exception as e:
+            logger.warning(f"Get artist failed: {e}")
+        return None
