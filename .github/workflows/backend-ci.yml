@@ -44,3 +44,4 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017
           ENVIRONMENT: development
+          JWT_SECRET: ci_test_jwt_secret_key_resonance_32chars
